@@ -1,0 +1,28 @@
+{
+    "pontos": [
+        {
+            "id": 1,
+            "nome": "Ao lado do Atacadão Dia a Dia",
+            "fotos": []
+        },
+        {
+            "id": 2,
+            "nome": "Próximo à Câmara Municipal",
+            "fotos": [
+                "uploads/diferenciais/camara_municipal.jpg"
+            ]
+        },
+        {
+            "id": 3,
+            "nome": "Entrada do Novo Gama",
+            "fotos": []
+        },
+        {
+            "id": 4,
+            "nome": "Próximo ao Vapt Vupt",
+            "fotos": [
+                "uploads/diferenciais/vapt_vupt.jpg"
+            ]
+        }
+    ]
+}

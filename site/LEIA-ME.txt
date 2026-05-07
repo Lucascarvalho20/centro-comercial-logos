@@ -1,0 +1,69 @@
+==========================================
+  PRÉDIO LOGOS — INSTRUÇÕES DE USO
+==========================================
+
+=== COMO ACESSAR O ADMIN NO VS CODE ===
+
+O arquivo admin.php é PHP e NÃO funciona com o Live Server
+do VS Code (que só serve HTML/CSS/JS estáticos).
+
+SOLUÇÃO — Usar o PHP embutido:
+
+  1. Abra o VS Code na pasta do site
+  2. Abra o TERMINAL (Ctrl + ` ou Terminal > Novo Terminal)
+  3. Digite o comando:
+
+         php -S localhost:8000
+
+  4. Abra o navegador e acesse:
+
+         http://localhost:8000
+
+  5. Para acessar o admin:
+
+         http://localhost:8000/admin.php
+
+  Login padrão: admin / admin
+  (Altere a senha no primeiro acesso!)
+
+DICA: Deixe o terminal aberto enquanto trabalha.
+Para parar, pressione Ctrl + C no terminal.
+
+Obs.: Se o PHP não estiver instalado:
+  - Windows: baixe em https://windows.php.net/download
+  - Mac: use "brew install php"
+  - Linux: use "sudo apt install php"
+
+=== HOSTINGER (Produção) ===
+
+  1. Suba TODOS os arquivos para public_html/
+  2. Permissões necessárias:
+       salas.json          → 666
+       galeria_home.json   → 666
+       uploads/ (pasta)    → 755
+       .admin_credentials  → 600
+  3. Acesse: seusite.com/admin.php
+
+=== PÁGINAS DO SITE ===
+
+  index.html    → Página principal
+  salas.html    → Lista de salas
+  detalhes.html → Sala individual
+  admin.php     → Painel admin (requer PHP)
+
+=== ESTRUTURA ===
+
+  style.css         → Visual
+  script.js         → JS da página principal
+  salas.js          → JS da lista de salas
+  detalhes.js       → JS dos detalhes da sala
+  salas.json        → Dados das salas (editado pelo admin)
+  galeria_home.json → Fotos da galeria inicial
+  uploads/          → Fotos enviadas pelo admin
+  fotos_predio/     → Fotos originais do prédio
+  sala_3/           → Fotos de exemplo
+  videos/           → Vídeo do prédio
+  .htaccess         → Config Apache
+  .admin_credentials → Senha criptografada (não editar)
+
+==========================================
