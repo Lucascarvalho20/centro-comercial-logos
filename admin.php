@@ -185,6 +185,17 @@ function lerSalas($file) {
     return (is_array($d) && isset($d['salas'])) ? $d : ['salas' => []];
 }
 function salvarJSON($file, $data) {
+    // Backup automático antes de sobrescrever (últimos 5 por arquivo)
+    if (file_exists($file) && filesize($file) > 10) {
+        $bk_dir = __DIR__ . '/backups';
+        if (!is_dir($bk_dir)) @mkdir($bk_dir, 0755, true);
+        $bk = $bk_dir . '/' . basename($file, '.json') . '_' . date('Ymd_His') . '.json';
+        @copy($file, $bk);
+        // Mantém só os 5 mais recentes por arquivo
+        $lista = glob($bk_dir . '/' . basename($file, '.json') . '_*.json') ?: [];
+        sort($lista);
+        foreach (array_slice($lista, 0, max(0, count($lista) - 5)) as $old) @unlink($old);
+    }
     if (file_exists($file) && !is_writable($file)) @chmod($file, 0666);
     return file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), LOCK_EX) !== false;
 }
@@ -1188,13 +1199,13 @@ $uploads_ok  = is_dir(__DIR__.'/uploads') ? is_writable(__DIR__.'/uploads') : is
 
                     <!-- Upload zone AJAX -->
                     <div class="upload-zone" id="uz-<?= $sala['id'] ?>">
-                        <input type="file" name="fotos" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm"
+                        <input type="file" name="fotos" accept="image/jpeg,image/png,image/webp,image/gif"
                             multiple
                             onchange="uploadFotosSala(<?= $sala['id'] ?>, this)">
                         <div class="upload-zone-label">
                             <div class="upload-zone-icon">📤</div>
                             <div class="upload-zone-text">Clique ou arraste fotos aqui</div>
-                            <div class="upload-zone-sub">Fotos e vídeos • JPG, PNG, WEBP, MP4</div>
+                            <div class="upload-zone-sub">Somente fotos • JPG, PNG, WEBP, GIF</div>
                         </div>
                     </div>
                     <div class="upload-progress-wrap" id="prog-wrap-<?= $sala['id'] ?>">
@@ -1685,8 +1696,8 @@ function showToast(msg, ok) {
 // Reduz fotos de câmera (~10MB) para ~300-500KB antes do upload
 // Muito mais rápido no mobile sem perda visual perceptível
 // ===========================
-var COMPRESS_MAX_PX  = 1920;   // px máx em qualquer dimensão
-var COMPRESS_QUALITY = 0.82;   // qualidade JPEG/WebP (0–1)
+var COMPRESS_MAX_PX  = 1280;   // px máx — equilibrio entre qualidade e velocidade no celular
+var COMPRESS_QUALITY = 0.78;   // qualidade JPEG/WebP — suficiente para web, arquivo menor
 
 // === WAKE LOCK: mantém tela acesa durante o upload ===
 var _wakeLock = null;
@@ -1716,6 +1727,8 @@ function comprimirArquivo(file) {
         if (!file.type || !file.type.startsWith('image/') || file.type === 'image/gif') {
             resolve(file); return;
         }
+        // Arquivo já pequeno (< 250KB): não precisa comprimir, vai rápido
+        if (file.size < 256000) { resolve(file); return; }
         try {
             var reader = new FileReader();
             reader.onerror = function() { resolve(file); };

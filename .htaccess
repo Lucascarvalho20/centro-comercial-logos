@@ -11,6 +11,11 @@
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
+# ── Bloquear pasta de backups (acesso externo proibido) ──
+<IfModule mod_rewrite.c>
+    RewriteRule ^backups/ - [F,L]
+</IfModule>
+
 # ── Bloquear arquivos sensíveis do admin ──
 <FilesMatch "^\.(admin_credentials|login_attempts|audit_log|htaccess|htpasswd|git)">
     Order allow,deny

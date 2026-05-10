@@ -229,15 +229,18 @@ function montarYoutubeHero(container, url) {
     var vid = extrairYoutubeId(url);
     if (!vid) { montarVideoHero(container, 'videos/video predio.mp4'); return; }
     container.innerHTML = '';
+
     var iframe = document.createElement('iframe');
+    // controls=0 esconde controles; disablekb=1 desativa teclado; fs=0 desativa fullscreen
+    // cc_load_policy=0 sem legendas; color=white minimiza branding; start=1 evita tela inicial
     iframe.src = 'https://www.youtube-nocookie.com/embed/' + vid
         + '?autoplay=1&mute=1&loop=1&playlist=' + vid
-        + '&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=0';
+        + '&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1'
+        + '&playsinline=1&enablejsapi=0&disablekb=1&fs=0&cc_load_policy=0&color=white&start=1';
     iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('allow', 'autoplay; encrypted-media');
-    iframe.setAttribute('allowfullscreen', '');
-    iframe.setAttribute('loading', 'lazy');
+    iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
     iframe.setAttribute('title', '');
+    iframe.setAttribute('tabindex', '-1');
     iframe.style.cssText = [
         'position:absolute',
         'top:50%',
@@ -248,9 +251,22 @@ function montarYoutubeHero(container, url) {
         'min-height:100%',
         'transform:translate(-50%,-50%)',
         'pointer-events:none',
-        'border:none'
+        'border:none',
+        'z-index:0'
     ].join(';');
     container.appendChild(iframe);
+
+    // Camada invisível bloqueadora de clique/toque sobre o iframe
+    // Garante que nenhum controle do YouTube seja acessível
+    var blocker = document.createElement('div');
+    blocker.style.cssText = [
+        'position:absolute',
+        'inset:0',
+        'z-index:1',
+        'background:transparent',
+        'cursor:default'
+    ].join(';');
+    container.appendChild(blocker);
 }
 
 function montarVideoHero(container, src) {

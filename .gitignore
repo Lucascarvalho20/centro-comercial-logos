@@ -4,6 +4,7 @@
 # ============================================================
 uploads/
 videos/
+backups/
 
 # Dados do site (gerados/editados pelo painel admin)
 # Ficam no servidor — o git nunca deve sobrescrever esses arquivos
