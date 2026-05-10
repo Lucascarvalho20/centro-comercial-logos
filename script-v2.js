@@ -231,41 +231,53 @@ function montarYoutubeHero(container, url) {
     container.innerHTML = '';
 
     var iframe = document.createElement('iframe');
-    // controls=0 esconde controles; disablekb=1 desativa teclado; fs=0 desativa fullscreen
-    // cc_load_policy=0 sem legendas; color=white minimiza branding; start=1 evita tela inicial
+    var origin = window.location.origin || 'https://logoscentrocomercial.com.br';
+    // SEM loop=1 e SEM playlist= : elimina os botões ⏮⏸⏭ de navegação de playlist
+    // enablejsapi=1 permite reiniciar o vídeo via postMessage quando terminar
     iframe.src = 'https://www.youtube-nocookie.com/embed/' + vid
-        + '?autoplay=1&mute=1&loop=1&playlist=' + vid
-        + '&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1'
-        + '&playsinline=1&enablejsapi=0&disablekb=1&fs=0&cc_load_policy=0&color=white&start=1';
+        + '?autoplay=1&mute=1&controls=0&showinfo=0&rel=0'
+        + '&iv_load_policy=3&modestbranding=1&playsinline=1'
+        + '&enablejsapi=1&disablekb=1&fs=0&cc_load_policy=0&color=white'
+        + '&origin=' + encodeURIComponent(origin);
     iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+    iframe.setAttribute('allow', 'autoplay; encrypted-media');
     iframe.setAttribute('title', '');
     iframe.setAttribute('tabindex', '-1');
     iframe.style.cssText = [
         'position:absolute',
-        'top:50%',
-        'left:50%',
-        'width:177.78vh',
-        'min-width:100%',
-        'height:56.25vw',
-        'min-height:100%',
+        'top:50%','left:50%',
+        'width:177.78vh','min-width:100%',
+        'height:56.25vw','min-height:100%',
         'transform:translate(-50%,-50%)',
         'pointer-events:none',
-        'border:none',
-        'z-index:0'
+        'border:none','z-index:0'
     ].join(';');
     container.appendChild(iframe);
 
-    // Camada invisível bloqueadora de clique/toque sobre o iframe
-    // Garante que nenhum controle do YouTube seja acessível
+    // Reinicia o vídeo via API quando terminar (substitui o loop nativo)
+    // O loop nativo ativaria o modo playlist e mostraria os botões ⏮⏸⏭
+    function reiniciarVideo() {
+        try {
+            iframe.contentWindow.postMessage(
+                JSON.stringify({event:'command', func:'seekTo', args:[0, true]}), '*'
+            );
+            iframe.contentWindow.postMessage(
+                JSON.stringify({event:'command', func:'playVideo', args:[]}), '*'
+            );
+        } catch(e) {}
+    }
+
+    window.addEventListener('message', function(e) {
+        try {
+            var d = JSON.parse(e.data);
+            // Estado 0 = vídeo terminou → reinicia
+            if (d.event === 'onStateChange' && d.info === 0) reiniciarVideo();
+        } catch(ex) {}
+    });
+
+    // Camada bloqueadora de toque/clique sobre o iframe
     var blocker = document.createElement('div');
-    blocker.style.cssText = [
-        'position:absolute',
-        'inset:0',
-        'z-index:1',
-        'background:transparent',
-        'cursor:default'
-    ].join(';');
+    blocker.style.cssText = 'position:absolute;inset:0;z-index:1;background:transparent;cursor:default;';
     container.appendChild(blocker);
 }
 
