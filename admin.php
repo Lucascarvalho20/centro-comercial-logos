@@ -682,6 +682,9 @@ if ($is_logged_in && $_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
                 $sala['facilidades'] = $facs;
+                // URL do vídeo YouTube da sala (opcional)
+                $yt = trim($_POST['youtube_url'] ?? '');
+                $sala['youtube_url'] = $yt;
                 break;
             }
         }
@@ -1237,6 +1240,15 @@ $uploads_ok  = is_dir(__DIR__.'/uploads') ? is_writable(__DIR__.'/uploads') : is
                         </div>
                         <div class="form-group"><label>Descrição Curta</label><textarea name="descricao"><?= htmlspecialchars($sala['descricao']) ?></textarea></div>
                         <div class="form-group"><label>Sobre esta Sala</label><textarea name="sobre"><?= htmlspecialchars($sala['sobre'] ?? '') ?></textarea></div>
+                        <div class="form-group">
+                            <label>🎬 Vídeo da Sala — URL do YouTube (opcional)</label>
+                            <input type="url" name="youtube_url"
+                                value="<?= htmlspecialchars($sala['youtube_url'] ?? '') ?>"
+                                placeholder="https://www.youtube.com/watch?v=... ou https://youtu.be/...">
+                            <small style="color:#888;font-size:11px;margin-top:4px;display:block">
+                                Deixe vazio para não exibir vídeo. Cole a URL do YouTube do vídeo desta sala (pode ser não listado).
+                            </small>
+                        </div>
                     </div>
 
                     <div class="form-section">

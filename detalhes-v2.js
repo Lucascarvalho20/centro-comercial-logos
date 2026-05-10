@@ -238,6 +238,23 @@ function renderizarDetalhes(sala) {
             ? sala.facilidades.map(function (f) { return '<li>' + (f.icon || '🏢') + ' ' + f.valor + '</li>'; }).join('')
             : '<li>🅿️ Estacionamento</li><li>🛗 Elevador</li><li>🏢 Portaria</li>';
     }
+
+    // Vídeo YouTube da sala (opcional)
+    var videoSection = document.getElementById('sala-video-section');
+    var videoContainer = document.getElementById('sala-video-container');
+    if (videoSection && videoContainer && sala.youtube_url) {
+        var vid = (sala.youtube_url.match(
+            /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+        ) || [])[1];
+        if (vid) {
+            videoContainer.innerHTML = '<iframe'
+                + ' src="https://www.youtube-nocookie.com/embed/' + vid + '?rel=0&modestbranding=1&playsinline=1"'
+                + ' frameborder="0" allowfullscreen'
+                + ' allow="autoplay; encrypted-media; fullscreen"'
+                + ' title="Vídeo da sala"></iframe>';
+            videoSection.style.display = 'block';
+        }
+    }
 }
 
 function mudarImagemDetalhes(el) {
