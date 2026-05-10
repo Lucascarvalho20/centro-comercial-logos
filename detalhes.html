@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Comercial Logos - Detalhes da Sala</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="favicon-32.png" type="image/png">
+    <link rel="apple-touch-icon" href="favicon-180.png">
+    <link rel="stylesheet" href="style-v2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" crossorigin="anonymous">
+    <style>
+    @media (max-width: 768px) {
+        .header, .header.header-scrolled {
+            background: #1A1F3A !important;
+            box-shadow: 0 2px 12px rgba(0,0,0,.3) !important;
+            padding: 13px 0 !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        .menu-toggle {
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        .menu-toggle .bar { background-color: #fff !important; }
+        .header .logo-text, .header .logo-icon, .header .admin-icon {
+            color: #fff !important;
+            text-shadow: none !important;
+        }
+        .nav .nav-list a { color: #2C3E50 !important; text-shadow: none !important; }
+        .nav .mobile-nav-footer .btn-contato {
+            background-color: #1A1F3A !important;
+            border: none !important;
+            color: #fff !important;
+        }
+    }
+    </style>
+</head>
+<body class="page-salas">
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" style="text-decoration:none;">
+                    <div class="logo"><span class="logo-icon">🏢</span><span class="logo-text logo-desktop">Centro Comercial Logos</span>
+                        <span class="logo-text logo-mobile">CCL</span></div>
+                </a>
+                <nav class="nav" id="nav-menu">
+                    <div class="nav-pill">
+                    <ul class="nav-list">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="salas.html">Alugar</a></li>
+                        <li><a href="clientes.html">Clientes</a></li>
+                        <li class="mobile-only"><button class="btn-contato" onclick="abrirPopupContato()">Contato</button></li>
+                    </ul>
+                    </div>
+                </nav>
+                <div class="header-actions-mobile">
+                    <a href="admin.php" class="admin-icon" title="Painel ADM"><i class="ri-user-line"></i></a>
+                    <button class="btn-contato desktop-only" onclick="abrirPopupContato()">Contato</button>
+                    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="popup-contato" class="popup">
+        <div class="popup-conteudo">
+            <span class="fechar" onclick="fecharPopupContato()">&times;</span>
+            <h2>Entre em Contato</h2>
+            <p>Estamos à disposição para tirar suas dúvidas e agendar uma visita.</p>
+            <div class="info-contato">
+                <div class="item-contato">
+                    <span class="icone">📞</span>
+                    <div class="texto"><strong>Telefone</strong><span>(61) 99973-9224</span></div>
+                </div>
+                <div class="item-contato">
+                    <span class="icone">✉️</span>
+                    <div class="texto"><strong>E-mail</strong><span>valdemirg13@icloud.com</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="sala-detalhes">
+        <div class="container">
+            <a href="salas.html" class="sala-detalhes-voltar">← Voltar para Salas</a>
+
+            <div class="sala-detalhes-container">
+                <div class="sala-detalhes-header">
+                    <!-- Galeria -->
+                    <div class="sala-detalhes-galeria">
+                        <div class="sala-detalhes-imagem-principal">
+                            <img id="imagemPrincipal" src="fotos_predio/foto_predio_1.jpg" alt="Sala">
+                        </div>
+                        <div class="sala-detalhes-miniaturas">
+                            <!-- Preenchido via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="sala-detalhes-info">
+                        <h1 id="salaTitle">Carregando...</h1>
+                        <span class="sala-detalhes-andar" id="salaAndar"></span>
+                        <p class="sala-detalhes-descricao" id="salaDescricao"></p>
+                        <div class="sala-detalhes-specs">
+                            <!-- Preenchido via JS -->
+                        </div>
+                        <div class="sala-detalhes-cta">
+                            <button class="btn btn-primary" onclick="abrirWhats()">💬 Falar no WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sobre / Características / Facilidades -->
+                <div class="sala-detalhes-bottom">
+                    <h2>Sobre esta Sala</h2>
+                    <p id="salaSobre" style="font-size:15px;color:#666;line-height:1.7;margin-bottom:30px;"></p>
+                    <div class="sala-detalhes-grid">
+                        <div>
+                            <h3>Características Principais</h3>
+                            <ul class="caracteristicas-lista">
+                                <!-- Preenchido via JS -->
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Facilidades do Prédio</h3>
+                            <ul class="facilidades-lista">
+                                <!-- Preenchido via JS -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contato" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🏢 Centro Comercial Logos</h3>
+                    
+                </div>
+                <div class="footer-section">
+                    <h4>Localização</h4>
+                    <p>📍 Av. Perimetral - Parque Estrela Dalva VI, Novo Gama - GO, 72860-151</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <p>📞 (61) 99973-9224</p>
+                    <p>📧 valdemirg13@icloud.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Horário de Funcionamento</h4>
+                    <div class="horario-box">
+                        <div class="horario-line"><span>Segunda a Sexta</span><span class="horario-time">07h às 22h</span></div>
+                        <div class="horario-line"><span>Sábado</span><span class="horario-time">07h às 16h</span></div>
+                        <div class="horario-line"><span>Domingo</span><span class="horario-time horario-closed">Fechado</span></div>
+                    </div>
+                    <button class="btn-fale-conosco" id="btnAgendarVisita">Agendar Visita</button>
+                </div>
+            </div>
+            
+            </div>
+        </div>
+    </footer>
+
+    <div id="popup-agendar" class="popup">
+        <div class="popup-conteudo">
+            <span class="fechar" id="fecharPopup">&times;</span>
+            <div class="agendar-header">
+                <h2>📅 Agendar Visita</h2>
+                <p>Escolha o melhor horário para conhecer nossas salas!</p>
+            </div>
+            <div class="horarios-disponiveis">
+                <h3>Horários Disponíveis:</h3>
+                <div class="horario-item"><strong>Segunda a Sexta:</strong> 12h às 14h</div>
+                <div class="horario-item"><strong>Sábado:</strong> 8h às 17h</div>
+                <div class="horario-item"><strong>Domingo:</strong> 8h às 18h</div>
+            </div>
+            <div class="agendar-whatsapp">
+                <p>💬 Clique abaixo para agendar pelo WhatsApp:</p>
+                <a href="https://wa.me/5561999739224?text=Olá!%20Gostaria%20de%20agendar%20uma%20visita%20ao%20Centro%20Comercial%20Logos." class="btn-whatsapp-agendar" target="_blank">
+                    <span>📱 Agendar pelo WhatsApp</span>
+                    <span>(61) 99973-9224</span>
+                </a>
+            </div>
+            <div class="agendar-footer"><p>Nosso time irá confirmar o horário! 🏢</p></div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX — visualização de imagem em tela cheia -->
+    <div id="lightbox" class="lightbox" onclick="fecharLightbox(event)">
+        <button class="lightbox-fechar" onclick="fecharLightbox()">&times;</button>
+        <img id="lightbox-img" src="" alt="Imagem da sala">
+    </div>
+
+    <script src="detalhes-v2.js"></script>
+</body>
+</html>

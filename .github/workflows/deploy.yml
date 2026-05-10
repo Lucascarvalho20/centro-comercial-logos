@@ -1,0 +1,39 @@
+name: Deploy → Hostinger (FTP backup)
+
+# Este workflow é reserva caso o Git nativo da Hostinger não funcione.
+# O método principal é o Git integrado do hPanel (Avançado > GIT).
+
+on:
+  workflow_dispatch:  # Só dispara manualmente (não automático)
+
+jobs:
+  deploy:
+    name: FTP Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP para Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            uploads/**
+            videos/**
+            .admin_credentials
+            .login_attempts.json
+            .audit_log.json
+            db_config.php
+            README.md
+            *.log
+            *.bak
+            *.tmp

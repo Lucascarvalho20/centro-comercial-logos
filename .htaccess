@@ -1,0 +1,94 @@
+# ============================================
+# Prédio Logos - Configurações do Servidor
+# ============================================
+
+# ── Forçar HTTPS (ativo quando SSL disponível) ──
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} !^localhost
+    RewriteCond %{HTTP_HOST} !^127\.0\.0\.1
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ── Bloquear arquivos sensíveis do admin ──
+<FilesMatch "^\.(admin_credentials|login_attempts|audit_log|htaccess|htpasswd|git)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Bloquear backup e arquivos temporários
+<FilesMatch "\.(bak|sql|log|swp|swo|orig|tmp)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Bloquear listagem de diretórios
+Options -Indexes
+
+# ── Headers de Segurança ──
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    # Permite autoplay de vídeo YouTube e imagens inline
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com; media-src 'self' https:; connect-src 'self'; font-src 'self' data:;"
+</IfModule>
+
+# ── MIME Types ──
+<IfModule mod_mime.c>
+    AddType text/css                 .css
+    AddType application/javascript   .js
+    AddType application/json         .json
+    AddType text/html                .html
+    AddType image/jpeg               .jpg .jpeg
+    AddType image/png                .png
+    AddType image/webp               .webp
+    AddType video/mp4                .mp4
+</IfModule>
+
+# ── Cache: imagens longas, CSS/JS/JSON sem cache ──
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|ico|svg)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+    <FilesMatch "\.json$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>
+
+# ── PHP: Limites de upload e segurança ──
+<IfModule mod_php8.c>
+    php_value upload_max_filesize 20M
+    php_value post_max_size 25M
+    php_value max_execution_time 60
+    php_value memory_limit 128M
+    php_flag expose_php Off
+    php_flag display_errors Off
+    php_value session.cookie_httponly 1
+    php_value session.cookie_samesite Strict
+    php_value session.use_strict_mode 1
+</IfModule>
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 20M
+    php_value post_max_size 25M
+    php_value max_execution_time 60
+    php_value memory_limit 128M
+    php_flag expose_php Off
+    php_flag display_errors Off
+    php_value session.cookie_httponly 1
+</IfModule>
+
+# Charset UTF-8
+AddDefaultCharset UTF-8
+
+# ── Compressão ──
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>

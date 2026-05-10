@@ -1,0 +1,26 @@
+# ============================================================
+# Conteúdo gerado pelo usuário — NÃO versionar no git
+# (ficam direto no servidor da Hostinger)
+# ============================================================
+uploads/
+videos/
+
+# Arquivos sensíveis do servidor (criados automaticamente pelo PHP)
+.admin_credentials
+.login_attempts.json
+.audit_log.json
+db_config.php
+
+# Arquivos de OS e IDE
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/settings.json
+
+# Logs e temporários
+*.log
+*.err
+*.swp
+*.bak
+*.tmp
+*.orig
