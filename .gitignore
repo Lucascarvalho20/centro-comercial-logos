@@ -1,9 +1,16 @@
 # ============================================================
 # Conteúdo gerado pelo usuário — NÃO versionar no git
-# (ficam direto no servidor da Hostinger)
+# (ficam direto no servidor da Hostinger, nunca sobrescrever)
 # ============================================================
 uploads/
 videos/
+
+# Dados do site (gerados/editados pelo painel admin)
+# Ficam no servidor — o git nunca deve sobrescrever esses arquivos
+salas.json
+clientes.json
+pontos_estrategicos.json
+galeria_home.json
 
 # Arquivos sensíveis do servidor (criados automaticamente pelo PHP)
 .admin_credentials

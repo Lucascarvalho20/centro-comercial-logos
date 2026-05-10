@@ -1520,6 +1520,7 @@ $uploads_ok  = is_dir(__DIR__.'/uploads') ? is_writable(__DIR__.'/uploads') : is
                         </span>
                     </div>
                     <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <button type="button" class="btn-acao" onclick="editarNomeCliente(<?= $cli['id'] ?>, '<?= addslashes($cli['nome']) ?>')">✏️ Nome</button>
                         <button type="button" class="btn-acao" onclick="toggleCliente(<?= $cli['id'] ?>)">
                             <?= ($cli['ativo']??true) ? 'Inativar' : 'Ativar' ?>
                         </button>
@@ -2184,6 +2185,32 @@ function editarNomePonto(id, nome) {
     fetch('admin.php?ajax=save_ponto', {method:'POST',body:fd})
         .then(function(r){return r.json();})
         .then(function(r){if(r.ok)location.reload();else alert(r.msg);});
+}
+
+/* ═══════ CLIENTES — Editar nome ═══════ */
+function editarNomeCliente(id, nome) {
+    var n = prompt('Novo nome do cliente:', nome);
+    if (n === null) return; // cancelou
+    n = n.trim();
+    if (!n) { alert('O nome não pode ficar vazio.'); return; }
+    var fd = new FormData();
+    fd.append('id', id); fd.append('nome', n); fd.append('csrf_token', CSRF_TOKEN);
+    fetch('admin.php?ajax=save_cliente', {method:'POST',body:fd})
+        .then(function(r){return r.json();})
+        .then(function(r){
+            if (r.ok) {
+                // Atualiza o nome na tela sem precisar recarregar a página
+                var card = document.getElementById('cli-card-' + id);
+                if (card) {
+                    var span = card.querySelector('.item-admin-header span[style*="font-weight:700"]');
+                    if (span) span.textContent = n;
+                }
+                showToast('✅ Nome atualizado para: ' + n, true);
+            } else {
+                alert(r.msg || 'Erro ao salvar.');
+            }
+        })
+        .catch(function(){ alert('Erro de rede.'); });
 }
 function uploadFotosPonto(id, nome, input) {
     var files = Array.from(input.files);
